@@ -3,51 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Me | Anonymous</title>
-    <!-- Utilizing Bootstrap for quick, clean styling -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Galaxy Loading Screen</title>
     <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .profile-icon {
-            width: 120px;
-            height: 120px;
-            background-color: #e9ecef;
-            border-radius: 50%;
+        /* Base page styling */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #050510; /* Deep space dark blue/black */
+            background-image: radial-gradient(circle at center, #110d29 0%, #050510 100%);
             display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+        }
+
+        /* Container for the loader */
+        .loader-wrapper {
+            display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            margin: 0 auto;
-            font-size: 3rem;
-            color: #6c757d;
+        }
+
+        /* 3D Galaxy Container */
+        .galaxy {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px; /* Gives the 3D depth effect */
+        }
+
+        /* The bright center of the galaxy */
+        .core {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 20px #ffffff, 0 0 50px #8a2be2, 0 0 80px #4b0082, 0 0 120px #00f3ff;
+            z-index: 10;
+            animation: pulse-core 2s ease-in-out infinite alternate;
+        }
+
+        /* Base styles for the orbiting rings */
+        .ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Inner Ring */
+        .ring-1 {
+            width: 100px;
+            height: 100px;
+            border-top: 3px solid #00f3ff;
+            border-left: 3px solid #00f3ff;
+            animation: spin1 2s linear infinite;
+        }
+
+        /* Middle Ring */
+        .ring-2 {
+            width: 150px;
+            height: 150px;
+            border-right: 3px solid #b026ff;
+            border-bottom: 3px solid #b026ff;
+            animation: spin2 3s linear infinite;
+        }
+
+        /* Outer Ring */
+        .ring-3 {
+            width: 200px;
+            height: 200px;
+            border-top: 3px solid #ffffff;
+            border-left: 3px solid #8a2be2;
+            animation: spin3 5s linear infinite;
+        }
+
+        /* Animations for the 3D spinning effect */
+        @keyframes spin1 {
+            0% { transform: rotateX(70deg) rotateZ(0deg); }
+            100% { transform: rotateX(70deg) rotateZ(360deg); }
+        }
+
+        @keyframes spin2 {
+            0% { transform: rotateX(60deg) rotateY(20deg) rotateZ(360deg); }
+            100% { transform: rotateX(60deg) rotateY(20deg) rotateZ(0deg); }
+        }
+
+        @keyframes spin3 {
+            0% { transform: rotateX(80deg) rotateY(-10deg) rotateZ(0deg); }
+            100% { transform: rotateX(80deg) rotateY(-10deg) rotateZ(360deg); }
+        }
+
+        @keyframes pulse-core {
+            0% { transform: scale(0.9); opacity: 0.8; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+
+        /* Text styling */
+        .loading-text {
+            margin-top: 50px;
+            color: #00f3ff;
+            font-size: 1.2rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            animation: text-glow 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes text-glow {
+            0% { opacity: 0.4; text-shadow: 0 0 5px #00f3ff; }
+            100% { opacity: 1; text-shadow: 0 0 20px #00f3ff, 0 0 30px #b026ff; }
         }
     </style>
 </head>
 <body>
-    <div class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 col-md-10">
-                <div class="card shadow border-0 rounded-4">
-                    <div class="card-body p-5 text-center">
-                        <div class="profile-icon mb-4">
-                            ?
-                        </div>
-                        <h1 class="display-5 fw-bold text-dark mb-3">Hello, I'm Anonymous</h1>
-                        <h2 class="h5 text-muted mb-4">A digital explorer testing the waters of web deployment.</h2>
-                        <hr class="w-25 mx-auto mb-4">
-                        <p class="lead text-secondary">
-                            This is a trial "About" page created to test the deployment pipeline from GitHub to Netlify. I build custom applications, tinker with code, and enjoy exploring new technologies.
-                        </p>
-                        <div class="mt-5">
-                            <span class="badge bg-primary fs-6 me-2 mb-2">JavaScript</span>
-                            <span class="badge bg-dark fs-6 me-2 mb-2">Bootstrap</span>
-                            <span class="badge bg-secondary fs-6 mb-2">Web Development</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="loader-wrapper">
+        <div class="galaxy">
+            <div class="core"></div>
+            <div class="ring ring-1"></div>
+            <div class="ring ring-2"></div>
+            <div class="ring ring-3"></div>
         </div>
+        <div class="loading-text">Warping...</div>
     </div>
 </body>
 </html>
