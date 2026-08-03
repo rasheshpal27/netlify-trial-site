@@ -3,387 +3,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gravitational Well Diptych</title>
+    <title>Black Hole</title>
     <style>
-        /* --- General Layout and Styles --- */
         body {
             margin: 0;
-            padding: 0;
-            background-color: #030303; /* Deep cosmic black */
-            color: white;
-            font-family: 'Montserrat', sans-serif; /* A clean font */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
             overflow: hidden;
+            background-color: #000;
         }
-
-        /* Container for the side-by-side panels */
-        .diptych-container {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 20px;
-            position: relative;
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
         }
-
-        /* Common styles for the frames */
-        .panel-frame {
-            width: 450px;
-            height: 450px;
-            background-color: black;
-            border-radius: 20px; /* Rounded corners like image 4 */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* --- Text and UI Overlays --- */
-        .panel-header {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: white;
-            pointer-events: none;
-            z-index: 10;
-        }
-
-        .panel-footer {
+        #info {
             position: absolute;
             bottom: 20px;
             left: 20px;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-            pointer-events: none;
-            z-index: 10;
-        }
-
-        /* The central label overlay for the left vortex */
-        .core-label {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 120px;
-            height: 40px;
-            background-color: rgba(0, 0, 0, 0.7);
-            border-radius: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: white;
+            color: rgba(255, 255, 255, 0.4);
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 14px;
             letter-spacing: 1px;
-            z-index: 15;
             pointer-events: none;
-            text-align: center;
-            padding: 5px;
-        }
-
-        /* Share icon overlay (representing image 2/3) */
-        .share-icon {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            width: 30px;
-            height: 30px;
-            fill: rgba(255, 255, 255, 0.6);
-            z-index: 10;
-            cursor: pointer;
-        }
-
-        /* --- Specific Panel Styling --- */
-        /* Left Panel (Vortex Animation) */
-        #panel-left {
-            display: block;
-        }
-        #vortexCanvas {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-
-        /* Right Panel (Static Cluster for structure) */
-        #panel-right {
-            display: block;
-            background-color: #050505;
-        }
-        /* Static image placeholder. You would replace this with your nebula image. */
-        #panel-right-content {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-image: radial-gradient(circle, #1a1a2a 0%, #050505 100%);
-        }
-        #panel-right-content::after {
-            content: "Realistic Star Cluster & Nebula Structure (PLACEHOLDER)";
-            color: rgba(255,255,255,0.4);
-            font-size: 0.8rem;
-            text-align: center;
-            width: 80%;
-        }
-
-        /* --- Global Footer (URL bar) --- */
-        .global-footer {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 30px;
-            background-color: rgba(128, 128, 128, 0.3);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.7);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
 <body>
+    <div id="info">website in progress...</div>
+    
+    <!-- Import Maps Polyfill for ES Modules -->
+    <script async src="https://unpkg.com/es-module-shims@1.8.0/dist/es-module-shims.js"></script>
 
-    <div class="diptych-container">
-        <!-- LEFT PANEL: Vortex Animation -->
-        <div id="panel-left" class="panel-frame">
-            <canvas id="vortexCanvas"></canvas>
-            <div class="core-label">PULSAR CORE: GRAVITATIONAL VORTEX (OBSERVED)</div>
-            <div class="panel-footer">Gravitational Well: Deep Field (Observed)</div>
-            <!-- Share icon from image data -->
-            <svg class="share-icon" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"></path></svg>
-        </div>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
 
-        <!-- RIGHT PANEL: Static Cluster Structure (for this code) -->
-        <div id="panel-right" class="panel-frame">
-            <div id="panel-right-content"></div>
-            <div class="panel-footer">Stellar Cluster & Nebula Structure (Observed)</div>
-            <!-- Share icon -->
-            <svg class="share-icon" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"></path></svg>
-        </div>
+    <script type="module">
+        import * as THREE from 'three';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
-        <!-- Global Footer URL bar -->
-        <div class="global-footer">photo/chromatic-cosmic-vortex-and-stellar-wonders-diptych-40112953/</div>
-    </div>
+        // 1. SCENE SETUP
+        const renderer = new THREE.WebGLRenderer({ antialias: false });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        document.body.appendChild(renderer.domElement);
 
-    <!-- Animation Script for Left Panel -->
-    <script>
-        // --- Particle System and Animation Logic ---
-        const canvas = document.getElementById('vortexCanvas');
-        const ctx = canvas.getContext('2d');
+        const scene = new THREE.Scene();
+        // Orthographic camera for a fullscreen shader quad
+        const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
+        camera.position.z = 1;
 
-        // Set high-fidelity internal resolution
-        const resolutionScale = 2;
-        canvas.width = canvas.parentElement.offsetWidth * resolutionScale;
-        canvas.height = canvas.parentElement.offsetHeight * resolutionScale;
-        
-        const center = { x: canvas.width / 2, y: canvas.height / 2 };
-        const particles = [];
-        const shootingStars = [];
+        // 2. SHADERS
+        const vertexShader = `
+            varying vec2 vUv;
+            void main() {
+                vUv = uv;
+                gl_Position = vec4(position, 1.0);
+            }
+        `;
 
-        // Parameters for the vortex and background stars
-        const NUM_BACKGROUND_STARS = 1500;
-        const NUM_VORTEX_PARTICLES = 1200;
-        const GALAXY_RADIUS = 300 * resolutionScale;
+        const fragmentShader = `
+            uniform float u_time;
+            uniform vec2 u_resolution;
+            varying vec2 vUv;
 
-        // Particle class for the vortex and distant stars
-        class Particle {
-            constructor(isVortex, distanceFactor) {
-                this.isVortex = isVortex;
-                this.active = true;
-
-                // Position procedurally
-                if (isVortex) {
-                    // Vortices swirl in a spiral
-                    const angle = Math.random() * Math.PI * 2;
-                    this.angleOffset = Math.random() * 0.1; // Procedural swirling arms
-                    const baseRadius = Math.random() * GALAXY_RADIUS * distanceFactor;
-                    this.radius = baseRadius;
-                    this.angle = angle + this.angleOffset;
-                    this.baseColor = { r: 255, g: 150 + Math.random() * 80, b: Math.random() * 100 }; // Orange/Gold
-                } else {
-                    // Distant stars fill the void
-                    this.x = Math.random() * canvas.width;
-                    this.y = Math.random() * canvas.height;
-                    this.radius = Math.random() * 1.5;
-                    this.baseColor = { r: 255, g: 255, b: 255 }; // Pure white
-                }
-
-                // Initial positioning calculation
-                this.update(0);
+            // --- Math & Procedural Noise Functions ---
+            mat2 rot(float a) {
+                float s = sin(a), c = cos(a);
+                return mat2(c, -s, s, c);
             }
 
-            update(rotationAngle) {
-                if (!this.active) return;
+            float hash(float n) { return fract(sin(n)*43758.5453123); }
+            
+            float noise(vec3 x) {
+                vec3 p = floor(x);
+                vec3 f = fract(x);
+                f = f*f*(3.0-2.0*f);
+                float n = p.x + p.y*57.0 + 113.0*p.z;
+                return mix(
+                    mix(mix(hash(n+0.0), hash(n+1.0),f.x), mix(hash(n+57.0), hash(n+58.0),f.x),f.y),
+                    mix(mix(hash(n+113.0), hash(n+114.0),f.x), mix(hash(n+170.0), hash(n+171.0),f.x),f.y),
+                f.z);
+            }
 
-                if (this.isVortex) {
-                    // Particles orbit the center at speed proportional to (1 / distance)
-                    const angularSpeed = (rotationAngle * (1 + (GALAXY_RADIUS - this.radius) / GALAXY_RADIUS)) + this.angleOffset;
-                    this.x = center.x + Math.cos(angularSpeed + this.angle) * this.radius;
-                    this.y = center.y + Math.sin(angularSpeed + this.angle) * this.radius;
+            // Fractional Brownian Motion (creates the wispy gas look)
+            float fbm(vec3 p) {
+                float f = 0.0;
+                f += 0.5000*noise(p); p = p*2.02;
+                f += 0.2500*noise(p); p = p*2.03;
+                f += 0.1250*noise(p); p = p*2.01;
+                f += 0.0625*noise(p);
+                return f / 0.9375;
+            }
+
+            void main() {
+                // Normalize pixel coordinates
+                vec2 uv = (vUv - 0.5) * 2.0;
+                uv.x *= u_resolution.x / u_resolution.y;
+
+                // Ray origin (camera position) and direction
+                vec3 ro = vec3(0.0, 0.8, -5.0);
+                vec3 rd = normalize(vec3(uv, 1.0));
+                
+                // Tilt the camera down slightly for a better view of the disk
+                rd.yz *= rot(0.2);
+                ro.yz *= rot(0.2);
+
+                // Black Hole Properties
+                float mass = 0.5;
+                float rs = 2.0 * mass; // Schwarzschild radius (Event Horizon)
+                
+                vec3 p = ro;
+                vec3 v = rd;
+                float dt = 0.02; // Raymarching step size
+                
+                vec3 col = vec3(0.0);
+                float diskAccum = 0.0;
+                
+                // --- CORE RAYMARCHING LOOP ---
+                for(int i = 0; i < 250; i++) {
+                    float r = length(p);
                     
-                    // High-resolution particle properties
-                    this.size = (0.3 + (1 - this.radius / GALAXY_RADIUS) * 1.0) * resolutionScale;
-                } else {
-                    // Subtle background star drift
-                    this.x -= 0.05;
-                    if (this.x < 0) this.x = canvas.width;
-                    this.y -= 0.03;
-                    if (this.y < 0) this.y = canvas.height;
+                    // 1. Caught in Event Horizon (Absolute Black)
+                    if(r < rs * 0.95) {
+                        col *= 0.0;
+                        break;
+                    }
+                    
+                    // 2. Escaped to deep space (Draw Starfield Background)
+                    if(r > 15.0) {
+                        // Stars are drawn using the heavily bent velocity vector (v)
+                        float stars = pow(max(0.0, noise(v * 150.0)), 15.0) * 1.5;
+                        stars += pow(max(0.0, noise(v * 250.0)), 20.0) * 0.8;
+                        
+                        // Subtle galactic background glow
+                        float galaxy = noise(v * 5.0) * 0.1;
+                        col += vec3(stars) + vec3(galaxy * 0.5, galaxy * 0.7, galaxy);
+                        break;
+                    }
+                    
+                    // 3. Gravitational Lensing (Bending the light ray)
+                    vec3 gravityDir = -normalize(p);
+                    vec3 force = gravityDir * (mass / (r * r));
+                    
+                    v = normalize(v + force * dt * 1.5); // Bends the velocity
+                    p += v * dt; // Move forward
+                    
+                    // 4. Volumetric Accretion Disk (Equatorial Gas)
+                    float diskThickness = 0.15;
+                    if(abs(p.y) < diskThickness && r > rs * 1.2 && r < 5.0) {
+                        float distToCenter = length(p.xz);
+                        
+                        // Orbital mechanics (closer to hole = spins faster)
+                        float angle = atan(p.z, p.x);
+                        float speed = sqrt(mass / distToCenter) * 1.5; 
+                        angle -= u_time * speed * 0.5;
+                        
+                        vec3 diskPos = vec3(cos(angle)*distToCenter, 0.0, sin(angle)*distToCenter);
+                        
+                        // Noise Turbulence
+                        float n = fbm(diskPos * 3.5 - vec3(0.0, u_time*0.1, 0.0));
+                        
+                        // Shaping the disk (fading out at edges and top/bottom)
+                        float verticalFade = smoothstep(diskThickness, 0.0, abs(p.y));
+                        float radialFade = smoothstep(5.0, 3.0, distToCenter) * smoothstep(rs*1.2, rs*2.0, distToCenter);
+                        
+                        // Doppler Beaming (Relativistic brightness shift)
+                        // Gas moving towards you is brighter, moving away is dimmer
+                        vec3 tangent = normalize(vec3(-diskPos.z, 0.0, diskPos.x));
+                        float doppler = max(0.0, 1.0 + dot(v, tangent) * 1.2);
+                        
+                        float density = n * verticalFade * radialFade * doppler;
+                        diskAccum += max(0.0, density * dt * 2.5);
+                    }
+                    
+                    // Adaptive step size (move faster through empty space to save GPU)
+                    dt = max(0.015, 0.02 * r);
                 }
-            }
-
-            draw() {
-                if (!this.active) return;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size || this.radius, 0, Math.PI * 2);
                 
-                let alpha = this.isVortex ? (0.4 + Math.random() * 0.3) : (0.1 + Math.random() * 0.2);
-                ctx.fillStyle = `rgba(${this.baseColor.r}, ${this.baseColor.g}, ${this.baseColor.b}, ${alpha})`;
+                // Color mapping for the disk (Orange/Gold core, cooler edges)
+                vec3 hotColor = vec3(1.0, 0.7, 0.3);
+                vec3 coolColor = vec3(0.8, 0.3, 0.1);
                 
-                // Add a faint blur for better atmosphere
-                if (this.isVortex) {
-                    ctx.shadowColor = `rgb(${this.baseColor.r}, ${this.baseColor.g}, ${this.baseColor.b})`;
-                    ctx.shadowBlur = 4;
-                } else {
-                    ctx.shadowBlur = 0;
-                }
+                vec3 finalDiskColor = mix(coolColor, hotColor, min(1.0, diskAccum * 0.5));
+                col += finalDiskColor * diskAccum * 1.5;
 
-                ctx.fill();
-                // Important: Reset shadows to keep lines sharp (like shooting stars)
-                ctx.shadowBlur = 0;
+                gl_FragColor = vec4(col, 1.0);
             }
-        }
+        `;
 
-        // Shooting Star class (crisp diagonal streaks)
-        class ShootingStar {
-            constructor() {
-                this.active = true;
-                // Spawn along top and right edges, moving top-right to bottom-left
-                if (Math.random() > 0.5) {
-                    // Spawn top edge
-                    this.x = Math.random() * canvas.width * 0.7;
-                    this.y = -50;
-                } else {
-                    // Spawn right edge
-                    this.x = canvas.width + 50;
-                    this.y = Math.random() * canvas.height * 0.7;
-                }
+        // 3. MATERIAL & MESH
+        const uniforms = {
+            u_time: { value: 0.0 },
+            u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
+        };
 
-                this.length = (150 + Math.random() * 100) * resolutionScale;
-                this.speed = (30 + Math.random() * 15) * resolutionScale;
-                this.alpha = 0.8 + Math.random() * 0.2;
-                
-                // Determine movement vector (diagonal top-right to bottom-left)
-                const targetX = -100;
-                const targetY = canvas.height + 100;
-                const dist = Math.sqrt((targetX - this.x)**2 + (targetY - this.y)**2);
-                this.velX = (targetX - this.x) / dist * this.speed;
-                this.velY = (targetY - this.y) / dist * this.speed;
-            }
+        const material = new THREE.ShaderMaterial({
+            vertexShader,
+            fragmentShader,
+            uniforms
+        });
 
-            update() {
-                if (!this.active) return;
-                this.x += this.velX;
-                this.y += this.velY;
-                
-                // Fade out based on progress
-                this.alpha -= 0.01;
-                
-                // Remove if off-screen or faded
-                if (this.x < -200 || this.y > canvas.height + 200 || this.alpha < 0.1) {
-                    this.active = false;
-                }
-            }
+        // The entire scene is just one flat square covering the screen
+        const plane = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
+        scene.add(plane);
 
-            draw() {
-                if (!this.active) return;
-                // Draw a crisp, high-contrast white line
-                ctx.beginPath();
-                ctx.lineWidth = 1 * resolutionScale;
-                ctx.strokeStyle = `rgba(255, 255, 255, ${this.alpha})`;
-                ctx.moveTo(this.x, this.y);
-                // The trail extends backwards
-                ctx.lineTo(this.x - this.velX * 0.2, this.y - this.velY * 0.2); 
-                ctx.stroke();
+        // 4. POST-PROCESSING (Cinematic Bloom)
+        const composer = new EffectComposer(renderer);
+        composer.addPass(new RenderPass(scene, camera));
 
-                // Add a brilliant core point at the very tip
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, 1.5 * resolutionScale, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
-                // Crisp lines, no shadow blur
-                ctx.fill();
-            }
-        }
+        // UnrealBloomPass parameters: resolution, strength, radius, threshold
+        const bloomPass = new UnrealBloomPass(
+            new THREE.Vector2(window.innerWidth, window.innerHeight),
+            1.2, // Strength of the glow
+            0.5, // Radius of the glow
+            0.6  // Threshold (only bloom bright pixels)
+        );
+        composer.addPass(bloomPass);
 
-        // Initialize particles
-        function init() {
-            // Static background stars
-            for (let i = 0; i < NUM_BACKGROUND_STARS; i++) {
-                particles.push(new Particle(false));
-            }
-            // Dense vortex particle system
-            for (let i = 0; i < NUM_VORTEX_PARTICLES; i++) {
-                const distanceFactor = 0.1 + Math.pow(Math.random(), 2.5); // Dense core, sparser arms
-                particles.push(new Particle(true, distanceFactor));
-            }
-        }
+        // 5. ANIMATION LOOP
+        const clock = new THREE.Clock();
 
-        let mainVortexRotation = 0;
-
-        // Main animation loop
         function animate() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)'; // Faint trail effect for movement
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            mainVortexRotation += 0.005;
-
-            // Draw Background Stars first
-            particles.forEach(p => {
-                p.update(mainVortexRotation);
-                p.draw();
-            });
-
-            // Draw Central Core (fiery and brilliant like image 4)
-            ctx.shadowColor = "rgb(255, 180, 50)";
-            ctx.shadowBlur = 30 * resolutionScale;
-            ctx.fillStyle = "white";
-            ctx.beginPath();
-            ctx.arc(center.x, center.y, 40 * resolutionScale, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.shadowBlur = 0; // Reset blur immediately
-
-            // Generate and animate Shooting Stars
-            if (Math.random() < 0.01 && shootingStars.length < 5) {
-                shootingStars.push(new ShootingStar());
-            }
-
-            // Draw crisp lines for shooting stars last
-            shootingStars.forEach(star => {
-                star.update();
-                star.draw();
-            });
-
-            // Clean up inactive shooting stars
-            for (let i = shootingStars.length - 1; i >= 0; i--) {
-                if (!shootingStars[i].active) {
-                    shootingStars.splice(i, 1);
-                }
-            }
-
             requestAnimationFrame(animate);
+            uniforms.u_time.value = clock.getElapsedTime();
+            composer.render();
         }
 
-        init();
         animate();
+
+        // 6. RESIZE HANDLER
+        window.addEventListener('resize', () => {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            renderer.setSize(width, height);
+            composer.setSize(width, height);
+            uniforms.u_resolution.value.set(width, height);
+        });
     </script>
 </body>
 </html>
