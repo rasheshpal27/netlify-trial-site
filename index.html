@@ -3,144 +3,387 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Electrifying Spiral Galaxy</title>
+    <title>Gravitational Well Diptych</title>
     <style>
-        /* Reset and base styles */
-        body, html {
+        /* --- General Layout and Styles --- */
+        body {
             margin: 0;
             padding: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #020108; /* Deepest cosmic black */
+            background-color: #030303; /* Deep cosmic black */
+            color: white;
+            font-family: 'Montserrat', sans-serif; /* A clean font */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
             overflow: hidden;
-            font-family: 'Courier New', Courier, monospace;
         }
 
-        /* Make the canvas fill the entire screen */
-        canvas {
-            display: block;
+        /* Container for the side-by-side panels */
+        .diptych-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+            position: relative;
         }
 
-        /* Centered loading text with a neon pulse */
-        .loading-text {
+        /* Common styles for the frames */
+        .panel-frame {
+            width: 450px;
+            height: 450px;
+            background-color: black;
+            border-radius: 20px; /* Rounded corners like image 4 */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* --- Text and UI Overlays --- */
+        .panel-header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: white;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .panel-footer {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* The central label overlay for the left vortex */
+        .core-label {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1.5rem;
-            letter-spacing: 12px;
-            text-transform: uppercase;
-            pointer-events: none; /* Allows clicking through the text */
-            z-index: 10;
-            animation: pulse-text 2s ease-in-out infinite alternate;
+            width: 120px;
+            height: 40px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: white;
+            letter-spacing: 1px;
+            z-index: 15;
+            pointer-events: none;
+            text-align: center;
+            padding: 5px;
         }
 
-        @keyframes pulse-text {
-            0% { 
-                opacity: 0.5; 
-                text-shadow: 0 0 5px #00f3ff; 
-            }
-            100% { 
-                opacity: 1; 
-                text-shadow: 0 0 20px #00f3ff, 0 0 40px #b026ff; 
-            }
+        /* Share icon overlay (representing image 2/3) */
+        .share-icon {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 30px;
+            height: 30px;
+            fill: rgba(255, 255, 255, 0.6);
+            z-index: 10;
+            cursor: pointer;
+        }
+
+        /* --- Specific Panel Styling --- */
+        /* Left Panel (Vortex Animation) */
+        #panel-left {
+            display: block;
+        }
+        #vortexCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Right Panel (Static Cluster for structure) */
+        #panel-right {
+            display: block;
+            background-color: #050505;
+        }
+        /* Static image placeholder. You would replace this with your nebula image. */
+        #panel-right-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: radial-gradient(circle, #1a1a2a 0%, #050505 100%);
+        }
+        #panel-right-content::after {
+            content: "Realistic Star Cluster & Nebula Structure (PLACEHOLDER)";
+            color: rgba(255,255,255,0.4);
+            font-size: 0.8rem;
+            text-align: center;
+            width: 80%;
+        }
+
+        /* --- Global Footer (URL bar) --- */
+        .global-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background-color: rgba(128, 128, 128, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
 <body>
-    <div class="loading-text">SYSTEM ONLINE</div>
-    
-    <!-- The canvas where JavaScript will draw our galaxy -->
-    <canvas id="galaxyCanvas"></canvas>
 
+    <div class="diptych-container">
+        <!-- LEFT PANEL: Vortex Animation -->
+        <div id="panel-left" class="panel-frame">
+            <canvas id="vortexCanvas"></canvas>
+            <div class="core-label">PULSAR CORE: GRAVITATIONAL VORTEX (OBSERVED)</div>
+            <div class="panel-footer">Gravitational Well: Deep Field (Observed)</div>
+            <!-- Share icon from image data -->
+            <svg class="share-icon" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"></path></svg>
+        </div>
+
+        <!-- RIGHT PANEL: Static Cluster Structure (for this code) -->
+        <div id="panel-right" class="panel-frame">
+            <div id="panel-right-content"></div>
+            <div class="panel-footer">Stellar Cluster & Nebula Structure (Observed)</div>
+            <!-- Share icon -->
+            <svg class="share-icon" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"></path></svg>
+        </div>
+
+        <!-- Global Footer URL bar -->
+        <div class="global-footer">photo/chromatic-cosmic-vortex-and-stellar-wonders-diptych-40112953/</div>
+    </div>
+
+    <!-- Animation Script for Left Panel -->
     <script>
-        const canvas = document.getElementById('galaxyCanvas');
+        // --- Particle System and Animation Logic ---
+        const canvas = document.getElementById('vortexCanvas');
         const ctx = canvas.getContext('2d');
+
+        // Set high-fidelity internal resolution
+        const resolutionScale = 2;
+        canvas.width = canvas.parentElement.offsetWidth * resolutionScale;
+        canvas.height = canvas.parentElement.offsetHeight * resolutionScale;
         
-        // Size the canvas to the browser window
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
+        const center = { x: canvas.width / 2, y: canvas.height / 2 };
         const particles = [];
-        // Electrifying color palette: Neon Cyan, Deep Purple, Bright White, and Metallic Silver
-        const colors = ['#00f3ff', '#b026ff', '#ffffff', '#e0e0e0']; 
+        const shootingStars = [];
 
-        // Particle Class to generate individual stars
+        // Parameters for the vortex and background stars
+        const NUM_BACKGROUND_STARS = 1500;
+        const NUM_VORTEX_PARTICLES = 1200;
+        const GALAXY_RADIUS = 300 * resolutionScale;
+
+        // Particle class for the vortex and distant stars
         class Particle {
-            constructor(x, y, radius, color, angle, distance) {
-                this.x = x;
-                this.y = y;
-                this.radius = radius;
-                this.color = color;
-                this.angle = angle;
-                this.distance = distance;
-                // Varying speeds for a realistic cosmic swirl
-                this.speed = 0.001 + Math.random() * 0.002; 
+            constructor(isVortex, distanceFactor) {
+                this.isVortex = isVortex;
+                this.active = true;
+
+                // Position procedurally
+                if (isVortex) {
+                    // Vortices swirl in a spiral
+                    const angle = Math.random() * Math.PI * 2;
+                    this.angleOffset = Math.random() * 0.1; // Procedural swirling arms
+                    const baseRadius = Math.random() * GALAXY_RADIUS * distanceFactor;
+                    this.radius = baseRadius;
+                    this.angle = angle + this.angleOffset;
+                    this.baseColor = { r: 255, g: 150 + Math.random() * 80, b: Math.random() * 100 }; // Orange/Gold
+                } else {
+                    // Distant stars fill the void
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.radius = Math.random() * 1.5;
+                    this.baseColor = { r: 255, g: 255, b: 255 }; // Pure white
+                }
+
+                // Initial positioning calculation
+                this.update(0);
             }
 
-            update() {
-                this.angle += this.speed;
-                // Trigonometry to move particles in a circle based on their distance from center
-                this.x = canvas.width / 2 + Math.cos(this.angle) * this.distance;
-                this.y = canvas.height / 2 + Math.sin(this.angle) * this.distance;
+            update(rotationAngle) {
+                if (!this.active) return;
+
+                if (this.isVortex) {
+                    // Particles orbit the center at speed proportional to (1 / distance)
+                    const angularSpeed = (rotationAngle * (1 + (GALAXY_RADIUS - this.radius) / GALAXY_RADIUS)) + this.angleOffset;
+                    this.x = center.x + Math.cos(angularSpeed + this.angle) * this.radius;
+                    this.y = center.y + Math.sin(angularSpeed + this.angle) * this.radius;
+                    
+                    // High-resolution particle properties
+                    this.size = (0.3 + (1 - this.radius / GALAXY_RADIUS) * 1.0) * resolutionScale;
+                } else {
+                    // Subtle background star drift
+                    this.x -= 0.05;
+                    if (this.x < 0) this.x = canvas.width;
+                    this.y -= 0.03;
+                    if (this.y < 0) this.y = canvas.height;
+                }
             }
 
             draw() {
+                if (!this.active) return;
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-                ctx.fillStyle = this.color;
-                // Add an intense glow effect to each star
-                ctx.shadowColor = this.color;
-                ctx.shadowBlur = 12;
+                ctx.arc(this.x, this.y, this.size || this.radius, 0, Math.PI * 2);
+                
+                let alpha = this.isVortex ? (0.4 + Math.random() * 0.3) : (0.1 + Math.random() * 0.2);
+                ctx.fillStyle = `rgba(${this.baseColor.r}, ${this.baseColor.g}, ${this.baseColor.b}, ${alpha})`;
+                
+                // Add a faint blur for better atmosphere
+                if (this.isVortex) {
+                    ctx.shadowColor = `rgb(${this.baseColor.r}, ${this.baseColor.g}, ${this.baseColor.b})`;
+                    ctx.shadowBlur = 4;
+                } else {
+                    ctx.shadowBlur = 0;
+                }
+
                 ctx.fill();
-                ctx.closePath();
+                // Important: Reset shadows to keep lines sharp (like shooting stars)
+                ctx.shadowBlur = 0;
             }
         }
 
-        // Initialize the galaxy
+        // Shooting Star class (crisp diagonal streaks)
+        class ShootingStar {
+            constructor() {
+                this.active = true;
+                // Spawn along top and right edges, moving top-right to bottom-left
+                if (Math.random() > 0.5) {
+                    // Spawn top edge
+                    this.x = Math.random() * canvas.width * 0.7;
+                    this.y = -50;
+                } else {
+                    // Spawn right edge
+                    this.x = canvas.width + 50;
+                    this.y = Math.random() * canvas.height * 0.7;
+                }
+
+                this.length = (150 + Math.random() * 100) * resolutionScale;
+                this.speed = (30 + Math.random() * 15) * resolutionScale;
+                this.alpha = 0.8 + Math.random() * 0.2;
+                
+                // Determine movement vector (diagonal top-right to bottom-left)
+                const targetX = -100;
+                const targetY = canvas.height + 100;
+                const dist = Math.sqrt((targetX - this.x)**2 + (targetY - this.y)**2);
+                this.velX = (targetX - this.x) / dist * this.speed;
+                this.velY = (targetY - this.y) / dist * this.speed;
+            }
+
+            update() {
+                if (!this.active) return;
+                this.x += this.velX;
+                this.y += this.velY;
+                
+                // Fade out based on progress
+                this.alpha -= 0.01;
+                
+                // Remove if off-screen or faded
+                if (this.x < -200 || this.y > canvas.height + 200 || this.alpha < 0.1) {
+                    this.active = false;
+                }
+            }
+
+            draw() {
+                if (!this.active) return;
+                // Draw a crisp, high-contrast white line
+                ctx.beginPath();
+                ctx.lineWidth = 1 * resolutionScale;
+                ctx.strokeStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.moveTo(this.x, this.y);
+                // The trail extends backwards
+                ctx.lineTo(this.x - this.velX * 0.2, this.y - this.velY * 0.2); 
+                ctx.stroke();
+
+                // Add a brilliant core point at the very tip
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 1.5 * resolutionScale, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                // Crisp lines, no shadow blur
+                ctx.fill();
+            }
+        }
+
+        // Initialize particles
         function init() {
-            // Generate 1,000 particles
-            for (let i = 0; i < 1000; i++) {
-                const radius = Math.random() * 1.5;
-                
-                // Math to create a spiral galaxy shape
-                const distance = Math.random() * (canvas.width > canvas.height ? canvas.width / 1.5 : canvas.height / 1.5);
-                const angle = distance * 0.05 + Math.random() * Math.PI * 2;
-                
-                // Pick a random color from our array
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                
-                particles.push(new Particle(canvas.width / 2, canvas.height / 2, radius, color, angle, distance));
+            // Static background stars
+            for (let i = 0; i < NUM_BACKGROUND_STARS; i++) {
+                particles.push(new Particle(false));
+            }
+            // Dense vortex particle system
+            for (let i = 0; i < NUM_VORTEX_PARTICLES; i++) {
+                const distanceFactor = 0.1 + Math.pow(Math.random(), 2.5); // Dense core, sparser arms
+                particles.push(new Particle(true, distanceFactor));
             }
         }
 
-        // Animation Loop
+        let mainVortexRotation = 0;
+
+        // Main animation loop
         function animate() {
-            requestAnimationFrame(animate);
-            
-            // Fill the background with a slightly transparent black to create a trailing effect
-            ctx.fillStyle = 'rgba(2, 1, 8, 0.15)'; 
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)'; // Faint trail effect for movement
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Update and draw every particle
-            particles.forEach(particle => {
-                particle.update();
-                particle.draw();
+
+            mainVortexRotation += 0.005;
+
+            // Draw Background Stars first
+            particles.forEach(p => {
+                p.update(mainVortexRotation);
+                p.draw();
             });
+
+            // Draw Central Core (fiery and brilliant like image 4)
+            ctx.shadowColor = "rgb(255, 180, 50)";
+            ctx.shadowBlur = 30 * resolutionScale;
+            ctx.fillStyle = "white";
+            ctx.beginPath();
+            ctx.arc(center.x, center.y, 40 * resolutionScale, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0; // Reset blur immediately
+
+            // Generate and animate Shooting Stars
+            if (Math.random() < 0.01 && shootingStars.length < 5) {
+                shootingStars.push(new ShootingStar());
+            }
+
+            // Draw crisp lines for shooting stars last
+            shootingStars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+
+            // Clean up inactive shooting stars
+            for (let i = shootingStars.length - 1; i >= 0; i--) {
+                if (!shootingStars[i].active) {
+                    shootingStars.splice(i, 1);
+                }
+            }
+
+            requestAnimationFrame(animate);
         }
 
         init();
         animate();
-
-        // Ensure the canvas resizes perfectly if the user changes their window size
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            // Clear existing array and regenerate particles on resize to prevent distortion
-            particles.length = 0; 
-            init();
-        });
     </script>
 </body>
 </html>
